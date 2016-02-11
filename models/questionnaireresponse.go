@@ -42,7 +42,7 @@ type QuestionnaireResponse struct {
 	Authored       *FHIRDateTime                        `bson:"authored,omitempty" json:"authored,omitempty"`
 	Source         *Reference                           `bson:"source,omitempty" json:"source,omitempty"`
 	Encounter      *Reference                           `bson:"encounter,omitempty" json:"encounter,omitempty"`
-	Group          *QuestionnaireResponseGroupComponent `bson:"group,omitempty" json:"group,omitempty"`
+	Item           []QuestionnaireResponseItemComponent `bson:"item,omitempty" json:"item,omitempty"`
 }
 
 // Custom marshaller to add the resourceType property, as required by the specification
@@ -87,36 +87,29 @@ func (x *QuestionnaireResponse) checkResourceType() error {
 	return nil
 }
 
-type QuestionnaireResponseGroupComponent struct {
-	LinkId   string                                   `bson:"linkId,omitempty" json:"linkId,omitempty"`
-	Title    string                                   `bson:"title,omitempty" json:"title,omitempty"`
-	Text     string                                   `bson:"text,omitempty" json:"text,omitempty"`
-	Subject  *Reference                               `bson:"subject,omitempty" json:"subject,omitempty"`
-	Group    []QuestionnaireResponseGroupComponent    `bson:"group,omitempty" json:"group,omitempty"`
-	Question []QuestionnaireResponseQuestionComponent `bson:"question,omitempty" json:"question,omitempty"`
+type QuestionnaireResponseItemComponent struct {
+	LinkId  string                                     `bson:"linkId,omitempty" json:"linkId,omitempty"`
+	Text    string                                     `bson:"text,omitempty" json:"text,omitempty"`
+	Subject *Reference                                 `bson:"subject,omitempty" json:"subject,omitempty"`
+	Answer  []QuestionnaireResponseItemAnswerComponent `bson:"answer,omitempty" json:"answer,omitempty"`
+	Item    []QuestionnaireResponseItemComponent       `bson:"item,omitempty" json:"item,omitempty"`
 }
 
-type QuestionnaireResponseQuestionComponent struct {
-	LinkId string                                         `bson:"linkId,omitempty" json:"linkId,omitempty"`
-	Text   string                                         `bson:"text,omitempty" json:"text,omitempty"`
-	Answer []QuestionnaireResponseQuestionAnswerComponent `bson:"answer,omitempty" json:"answer,omitempty"`
-}
-
-type QuestionnaireResponseQuestionAnswerComponent struct {
-	ValueBoolean    *bool                                 `bson:"valueBoolean,omitempty" json:"valueBoolean,omitempty"`
-	ValueDecimal    *float64                              `bson:"valueDecimal,omitempty" json:"valueDecimal,omitempty"`
-	ValueInteger    *int32                                `bson:"valueInteger,omitempty" json:"valueInteger,omitempty"`
-	ValueDate       *FHIRDateTime                         `bson:"valueDate,omitempty" json:"valueDate,omitempty"`
-	ValueDateTime   *FHIRDateTime                         `bson:"valueDateTime,omitempty" json:"valueDateTime,omitempty"`
-	ValueInstant    *FHIRDateTime                         `bson:"valueInstant,omitempty" json:"valueInstant,omitempty"`
-	ValueTime       *FHIRDateTime                         `bson:"valueTime,omitempty" json:"valueTime,omitempty"`
-	ValueString     string                                `bson:"valueString,omitempty" json:"valueString,omitempty"`
-	ValueUri        string                                `bson:"valueUri,omitempty" json:"valueUri,omitempty"`
-	ValueAttachment *Attachment                           `bson:"valueAttachment,omitempty" json:"valueAttachment,omitempty"`
-	ValueCoding     *Coding                               `bson:"valueCoding,omitempty" json:"valueCoding,omitempty"`
-	ValueQuantity   *Quantity                             `bson:"valueQuantity,omitempty" json:"valueQuantity,omitempty"`
-	ValueReference  *Reference                            `bson:"valueReference,omitempty" json:"valueReference,omitempty"`
-	Group           []QuestionnaireResponseGroupComponent `bson:"group,omitempty" json:"group,omitempty"`
+type QuestionnaireResponseItemAnswerComponent struct {
+	ValueBoolean    *bool                                `bson:"valueBoolean,omitempty" json:"valueBoolean,omitempty"`
+	ValueDecimal    *float64                             `bson:"valueDecimal,omitempty" json:"valueDecimal,omitempty"`
+	ValueInteger    *int32                               `bson:"valueInteger,omitempty" json:"valueInteger,omitempty"`
+	ValueDate       *FHIRDateTime                        `bson:"valueDate,omitempty" json:"valueDate,omitempty"`
+	ValueDateTime   *FHIRDateTime                        `bson:"valueDateTime,omitempty" json:"valueDateTime,omitempty"`
+	ValueInstant    *FHIRDateTime                        `bson:"valueInstant,omitempty" json:"valueInstant,omitempty"`
+	ValueTime       *FHIRDateTime                        `bson:"valueTime,omitempty" json:"valueTime,omitempty"`
+	ValueString     string                               `bson:"valueString,omitempty" json:"valueString,omitempty"`
+	ValueUri        string                               `bson:"valueUri,omitempty" json:"valueUri,omitempty"`
+	ValueAttachment *Attachment                          `bson:"valueAttachment,omitempty" json:"valueAttachment,omitempty"`
+	ValueCoding     *Coding                              `bson:"valueCoding,omitempty" json:"valueCoding,omitempty"`
+	ValueQuantity   *Quantity                            `bson:"valueQuantity,omitempty" json:"valueQuantity,omitempty"`
+	ValueReference  *Reference                           `bson:"valueReference,omitempty" json:"valueReference,omitempty"`
+	Item            []QuestionnaireResponseItemComponent `bson:"item,omitempty" json:"item,omitempty"`
 }
 
 type QuestionnaireResponsePlus struct {
@@ -135,11 +128,15 @@ type QuestionnaireResponsePlusRelatedResources struct {
 	IncludedPractitionerResourcesReferencedBySource                *[]Practitioner          `bson:"_includedPractitionerResourcesReferencedBySource,omitempty"`
 	IncludedPatientResourcesReferencedBySource                     *[]Patient               `bson:"_includedPatientResourcesReferencedBySource,omitempty"`
 	IncludedRelatedPersonResourcesReferencedBySource               *[]RelatedPerson         `bson:"_includedRelatedPersonResourcesReferencedBySource,omitempty"`
-	RevIncludedProvenanceResourcesReferencingTarget                *[]Provenance            `bson:"_revIncludedProvenanceResourcesReferencingTarget,omitempty"`
 	RevIncludedDocumentManifestResourcesReferencingContentref      *[]DocumentManifest      `bson:"_revIncludedDocumentManifestResourcesReferencingContentref,omitempty"`
 	RevIncludedDocumentManifestResourcesReferencingRelatedref      *[]DocumentManifest      `bson:"_revIncludedDocumentManifestResourcesReferencingRelatedref,omitempty"`
-	RevIncludedListResourcesReferencingItem                        *[]List                  `bson:"_revIncludedListResourcesReferencingItem,omitempty"`
 	RevIncludedDocumentReferenceResourcesReferencingRelatedref     *[]DocumentReference     `bson:"_revIncludedDocumentReferenceResourcesReferencingRelatedref,omitempty"`
+	RevIncludedPaymentNoticeResourcesReferencingRequest            *[]PaymentNotice         `bson:"_revIncludedPaymentNoticeResourcesReferencingRequest,omitempty"`
+	RevIncludedPaymentNoticeResourcesReferencingResponse           *[]PaymentNotice         `bson:"_revIncludedPaymentNoticeResourcesReferencingResponse,omitempty"`
+	RevIncludedOrderResponseResourcesReferencingFulfillment        *[]OrderResponse         `bson:"_revIncludedOrderResponseResourcesReferencingFulfillment,omitempty"`
+	RevIncludedMessageHeaderResourcesReferencingData               *[]MessageHeader         `bson:"_revIncludedMessageHeaderResourcesReferencingData,omitempty"`
+	RevIncludedProvenanceResourcesReferencingTarget                *[]Provenance            `bson:"_revIncludedProvenanceResourcesReferencingTarget,omitempty"`
+	RevIncludedListResourcesReferencingItem                        *[]List                  `bson:"_revIncludedListResourcesReferencingItem,omitempty"`
 	RevIncludedOrderResourcesReferencingDetail                     *[]Order                 `bson:"_revIncludedOrderResourcesReferencingDetail,omitempty"`
 	RevIncludedObservationResourcesReferencingRelatedtarget        *[]Observation           `bson:"_revIncludedObservationResourcesReferencingRelatedtarget,omitempty"`
 	RevIncludedBasicResourcesReferencingSubject                    *[]Basic                 `bson:"_revIncludedBasicResourcesReferencingSubject,omitempty"`
@@ -147,12 +144,10 @@ type QuestionnaireResponsePlusRelatedResources struct {
 	RevIncludedCompositionResourcesReferencingSubject              *[]Composition           `bson:"_revIncludedCompositionResourcesReferencingSubject,omitempty"`
 	RevIncludedCompositionResourcesReferencingEntry                *[]Composition           `bson:"_revIncludedCompositionResourcesReferencingEntry,omitempty"`
 	RevIncludedDetectedIssueResourcesReferencingImplicated         *[]DetectedIssue         `bson:"_revIncludedDetectedIssueResourcesReferencingImplicated,omitempty"`
-	RevIncludedOrderResponseResourcesReferencingFulfillment        *[]OrderResponse         `bson:"_revIncludedOrderResponseResourcesReferencingFulfillment,omitempty"`
 	RevIncludedQuestionnaireResponseResourcesReferencingSubject    *[]QuestionnaireResponse `bson:"_revIncludedQuestionnaireResponseResourcesReferencingSubject,omitempty"`
 	RevIncludedProcessResponseResourcesReferencingRequest          *[]ProcessResponse       `bson:"_revIncludedProcessResponseResourcesReferencingRequest,omitempty"`
 	RevIncludedClinicalImpressionResourcesReferencingTrigger       *[]ClinicalImpression    `bson:"_revIncludedClinicalImpressionResourcesReferencingTrigger,omitempty"`
 	RevIncludedClinicalImpressionResourcesReferencingInvestigation *[]ClinicalImpression    `bson:"_revIncludedClinicalImpressionResourcesReferencingInvestigation,omitempty"`
-	RevIncludedMessageHeaderResourcesReferencingData               *[]MessageHeader         `bson:"_revIncludedMessageHeaderResourcesReferencingData,omitempty"`
 }
 
 func (q *QuestionnaireResponsePlusRelatedResources) GetIncludedQuestionnaireResourceReferencedByQuestionnaire() (questionnaire *Questionnaire, err error) {
@@ -265,15 +260,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetIncludedRelatedPersonReso
 	return
 }
 
-func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedProvenanceResourcesReferencingTarget() (provenances []Provenance, err error) {
-	if q.RevIncludedProvenanceResourcesReferencingTarget == nil {
-		err = errors.New("RevIncluded provenances not requested")
-	} else {
-		provenances = *q.RevIncludedProvenanceResourcesReferencingTarget
-	}
-	return
-}
-
 func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedDocumentManifestResourcesReferencingContentref() (documentManifests []DocumentManifest, err error) {
 	if q.RevIncludedDocumentManifestResourcesReferencingContentref == nil {
 		err = errors.New("RevIncluded documentManifests not requested")
@@ -292,20 +278,65 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedDocumentManife
 	return
 }
 
-func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedListResourcesReferencingItem() (lists []List, err error) {
-	if q.RevIncludedListResourcesReferencingItem == nil {
-		err = errors.New("RevIncluded lists not requested")
-	} else {
-		lists = *q.RevIncludedListResourcesReferencingItem
-	}
-	return
-}
-
 func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedDocumentReferenceResourcesReferencingRelatedref() (documentReferences []DocumentReference, err error) {
 	if q.RevIncludedDocumentReferenceResourcesReferencingRelatedref == nil {
 		err = errors.New("RevIncluded documentReferences not requested")
 	} else {
 		documentReferences = *q.RevIncludedDocumentReferenceResourcesReferencingRelatedref
+	}
+	return
+}
+
+func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedPaymentNoticeResourcesReferencingRequest() (paymentNotices []PaymentNotice, err error) {
+	if q.RevIncludedPaymentNoticeResourcesReferencingRequest == nil {
+		err = errors.New("RevIncluded paymentNotices not requested")
+	} else {
+		paymentNotices = *q.RevIncludedPaymentNoticeResourcesReferencingRequest
+	}
+	return
+}
+
+func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedPaymentNoticeResourcesReferencingResponse() (paymentNotices []PaymentNotice, err error) {
+	if q.RevIncludedPaymentNoticeResourcesReferencingResponse == nil {
+		err = errors.New("RevIncluded paymentNotices not requested")
+	} else {
+		paymentNotices = *q.RevIncludedPaymentNoticeResourcesReferencingResponse
+	}
+	return
+}
+
+func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedOrderResponseResourcesReferencingFulfillment() (orderResponses []OrderResponse, err error) {
+	if q.RevIncludedOrderResponseResourcesReferencingFulfillment == nil {
+		err = errors.New("RevIncluded orderResponses not requested")
+	} else {
+		orderResponses = *q.RevIncludedOrderResponseResourcesReferencingFulfillment
+	}
+	return
+}
+
+func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedMessageHeaderResourcesReferencingData() (messageHeaders []MessageHeader, err error) {
+	if q.RevIncludedMessageHeaderResourcesReferencingData == nil {
+		err = errors.New("RevIncluded messageHeaders not requested")
+	} else {
+		messageHeaders = *q.RevIncludedMessageHeaderResourcesReferencingData
+	}
+	return
+}
+
+func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedProvenanceResourcesReferencingTarget() (provenances []Provenance, err error) {
+	if q.RevIncludedProvenanceResourcesReferencingTarget == nil {
+		err = errors.New("RevIncluded provenances not requested")
+	} else {
+		provenances = *q.RevIncludedProvenanceResourcesReferencingTarget
+	}
+	return
+}
+
+func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedListResourcesReferencingItem() (lists []List, err error) {
+	if q.RevIncludedListResourcesReferencingItem == nil {
+		err = errors.New("RevIncluded lists not requested")
+	} else {
+		lists = *q.RevIncludedListResourcesReferencingItem
 	}
 	return
 }
@@ -373,15 +404,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedDetectedIssueR
 	return
 }
 
-func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedOrderResponseResourcesReferencingFulfillment() (orderResponses []OrderResponse, err error) {
-	if q.RevIncludedOrderResponseResourcesReferencingFulfillment == nil {
-		err = errors.New("RevIncluded orderResponses not requested")
-	} else {
-		orderResponses = *q.RevIncludedOrderResponseResourcesReferencingFulfillment
-	}
-	return
-}
-
 func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedQuestionnaireResponseResourcesReferencingSubject() (questionnaireResponses []QuestionnaireResponse, err error) {
 	if q.RevIncludedQuestionnaireResponseResourcesReferencingSubject == nil {
 		err = errors.New("RevIncluded questionnaireResponses not requested")
@@ -414,15 +436,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedClinicalImpres
 		err = errors.New("RevIncluded clinicalImpressions not requested")
 	} else {
 		clinicalImpressions = *q.RevIncludedClinicalImpressionResourcesReferencingInvestigation
-	}
-	return
-}
-
-func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedMessageHeaderResourcesReferencingData() (messageHeaders []MessageHeader, err error) {
-	if q.RevIncludedMessageHeaderResourcesReferencingData == nil {
-		err = errors.New("RevIncluded messageHeaders not requested")
-	} else {
-		messageHeaders = *q.RevIncludedMessageHeaderResourcesReferencingData
 	}
 	return
 }
@@ -484,11 +497,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetIncludedResources() map[s
 
 func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedResources() map[string]interface{} {
 	resourceMap := make(map[string]interface{})
-	if q.RevIncludedProvenanceResourcesReferencingTarget != nil {
-		for _, r := range *q.RevIncludedProvenanceResourcesReferencingTarget {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if q.RevIncludedDocumentManifestResourcesReferencingContentref != nil {
 		for _, r := range *q.RevIncludedDocumentManifestResourcesReferencingContentref {
 			resourceMap[r.Id] = &r
@@ -499,13 +507,38 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedResources() ma
 			resourceMap[r.Id] = &r
 		}
 	}
-	if q.RevIncludedListResourcesReferencingItem != nil {
-		for _, r := range *q.RevIncludedListResourcesReferencingItem {
+	if q.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
+		for _, r := range *q.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
 			resourceMap[r.Id] = &r
 		}
 	}
-	if q.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
-		for _, r := range *q.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
+	if q.RevIncludedPaymentNoticeResourcesReferencingRequest != nil {
+		for _, r := range *q.RevIncludedPaymentNoticeResourcesReferencingRequest {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedPaymentNoticeResourcesReferencingResponse != nil {
+		for _, r := range *q.RevIncludedPaymentNoticeResourcesReferencingResponse {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
+		for _, r := range *q.RevIncludedOrderResponseResourcesReferencingFulfillment {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedMessageHeaderResourcesReferencingData != nil {
+		for _, r := range *q.RevIncludedMessageHeaderResourcesReferencingData {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedProvenanceResourcesReferencingTarget != nil {
+		for _, r := range *q.RevIncludedProvenanceResourcesReferencingTarget {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedListResourcesReferencingItem != nil {
+		for _, r := range *q.RevIncludedListResourcesReferencingItem {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -544,11 +577,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedResources() ma
 			resourceMap[r.Id] = &r
 		}
 	}
-	if q.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
-		for _, r := range *q.RevIncludedOrderResponseResourcesReferencingFulfillment {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if q.RevIncludedQuestionnaireResponseResourcesReferencingSubject != nil {
 		for _, r := range *q.RevIncludedQuestionnaireResponseResourcesReferencingSubject {
 			resourceMap[r.Id] = &r
@@ -566,11 +594,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetRevIncludedResources() ma
 	}
 	if q.RevIncludedClinicalImpressionResourcesReferencingInvestigation != nil {
 		for _, r := range *q.RevIncludedClinicalImpressionResourcesReferencingInvestigation {
-			resourceMap[r.Id] = &r
-		}
-	}
-	if q.RevIncludedMessageHeaderResourcesReferencingData != nil {
-		for _, r := range *q.RevIncludedMessageHeaderResourcesReferencingData {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -629,11 +652,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetIncludedAndRevIncludedRes
 			resourceMap[r.Id] = &r
 		}
 	}
-	if q.RevIncludedProvenanceResourcesReferencingTarget != nil {
-		for _, r := range *q.RevIncludedProvenanceResourcesReferencingTarget {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if q.RevIncludedDocumentManifestResourcesReferencingContentref != nil {
 		for _, r := range *q.RevIncludedDocumentManifestResourcesReferencingContentref {
 			resourceMap[r.Id] = &r
@@ -644,13 +662,38 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetIncludedAndRevIncludedRes
 			resourceMap[r.Id] = &r
 		}
 	}
-	if q.RevIncludedListResourcesReferencingItem != nil {
-		for _, r := range *q.RevIncludedListResourcesReferencingItem {
+	if q.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
+		for _, r := range *q.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
 			resourceMap[r.Id] = &r
 		}
 	}
-	if q.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
-		for _, r := range *q.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
+	if q.RevIncludedPaymentNoticeResourcesReferencingRequest != nil {
+		for _, r := range *q.RevIncludedPaymentNoticeResourcesReferencingRequest {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedPaymentNoticeResourcesReferencingResponse != nil {
+		for _, r := range *q.RevIncludedPaymentNoticeResourcesReferencingResponse {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
+		for _, r := range *q.RevIncludedOrderResponseResourcesReferencingFulfillment {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedMessageHeaderResourcesReferencingData != nil {
+		for _, r := range *q.RevIncludedMessageHeaderResourcesReferencingData {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedProvenanceResourcesReferencingTarget != nil {
+		for _, r := range *q.RevIncludedProvenanceResourcesReferencingTarget {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if q.RevIncludedListResourcesReferencingItem != nil {
+		for _, r := range *q.RevIncludedListResourcesReferencingItem {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -689,11 +732,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetIncludedAndRevIncludedRes
 			resourceMap[r.Id] = &r
 		}
 	}
-	if q.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
-		for _, r := range *q.RevIncludedOrderResponseResourcesReferencingFulfillment {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if q.RevIncludedQuestionnaireResponseResourcesReferencingSubject != nil {
 		for _, r := range *q.RevIncludedQuestionnaireResponseResourcesReferencingSubject {
 			resourceMap[r.Id] = &r
@@ -711,11 +749,6 @@ func (q *QuestionnaireResponsePlusRelatedResources) GetIncludedAndRevIncludedRes
 	}
 	if q.RevIncludedClinicalImpressionResourcesReferencingInvestigation != nil {
 		for _, r := range *q.RevIncludedClinicalImpressionResourcesReferencingInvestigation {
-			resourceMap[r.Id] = &r
-		}
-	}
-	if q.RevIncludedMessageHeaderResourcesReferencingData != nil {
-		for _, r := range *q.RevIncludedMessageHeaderResourcesReferencingData {
 			resourceMap[r.Id] = &r
 		}
 	}

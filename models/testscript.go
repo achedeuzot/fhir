@@ -34,27 +34,29 @@ import (
 
 type TestScript struct {
 	DomainResource `bson:",inline"`
-	Url            string                        `bson:"url,omitempty" json:"url,omitempty"`
-	Version        string                        `bson:"version,omitempty" json:"version,omitempty"`
-	Name           string                        `bson:"name,omitempty" json:"name,omitempty"`
-	Status         string                        `bson:"status,omitempty" json:"status,omitempty"`
-	Identifier     *Identifier                   `bson:"identifier,omitempty" json:"identifier,omitempty"`
-	Experimental   *bool                         `bson:"experimental,omitempty" json:"experimental,omitempty"`
-	Publisher      string                        `bson:"publisher,omitempty" json:"publisher,omitempty"`
-	Contact        []TestScriptContactComponent  `bson:"contact,omitempty" json:"contact,omitempty"`
-	Date           *FHIRDateTime                 `bson:"date,omitempty" json:"date,omitempty"`
-	Description    string                        `bson:"description,omitempty" json:"description,omitempty"`
-	UseContext     []CodeableConcept             `bson:"useContext,omitempty" json:"useContext,omitempty"`
-	Requirements   string                        `bson:"requirements,omitempty" json:"requirements,omitempty"`
-	Copyright      string                        `bson:"copyright,omitempty" json:"copyright,omitempty"`
-	Metadata       *TestScriptMetadataComponent  `bson:"metadata,omitempty" json:"metadata,omitempty"`
-	Multiserver    *bool                         `bson:"multiserver,omitempty" json:"multiserver,omitempty"`
-	Fixture        []TestScriptFixtureComponent  `bson:"fixture,omitempty" json:"fixture,omitempty"`
-	Profile        []Reference                   `bson:"profile,omitempty" json:"profile,omitempty"`
-	Variable       []TestScriptVariableComponent `bson:"variable,omitempty" json:"variable,omitempty"`
-	Setup          *TestScriptSetupComponent     `bson:"setup,omitempty" json:"setup,omitempty"`
-	Test           []TestScriptTestComponent     `bson:"test,omitempty" json:"test,omitempty"`
-	Teardown       *TestScriptTeardownComponent  `bson:"teardown,omitempty" json:"teardown,omitempty"`
+	Url            string                           `bson:"url,omitempty" json:"url,omitempty"`
+	Version        string                           `bson:"version,omitempty" json:"version,omitempty"`
+	Name           string                           `bson:"name,omitempty" json:"name,omitempty"`
+	Status         string                           `bson:"status,omitempty" json:"status,omitempty"`
+	Identifier     *Identifier                      `bson:"identifier,omitempty" json:"identifier,omitempty"`
+	Experimental   *bool                            `bson:"experimental,omitempty" json:"experimental,omitempty"`
+	Publisher      string                           `bson:"publisher,omitempty" json:"publisher,omitempty"`
+	Contact        []TestScriptContactComponent     `bson:"contact,omitempty" json:"contact,omitempty"`
+	Date           *FHIRDateTime                    `bson:"date,omitempty" json:"date,omitempty"`
+	Description    string                           `bson:"description,omitempty" json:"description,omitempty"`
+	UseContext     []CodeableConcept                `bson:"useContext,omitempty" json:"useContext,omitempty"`
+	Requirements   string                           `bson:"requirements,omitempty" json:"requirements,omitempty"`
+	Copyright      string                           `bson:"copyright,omitempty" json:"copyright,omitempty"`
+	Metadata       *TestScriptMetadataComponent     `bson:"metadata,omitempty" json:"metadata,omitempty"`
+	Origin         []TestScriptOriginComponent      `bson:"origin,omitempty" json:"origin,omitempty"`
+	Destination    []TestScriptDestinationComponent `bson:"destination,omitempty" json:"destination,omitempty"`
+	Multiserver    *bool                            `bson:"multiserver,omitempty" json:"multiserver,omitempty"`
+	Fixture        []TestScriptFixtureComponent     `bson:"fixture,omitempty" json:"fixture,omitempty"`
+	Profile        []Reference                      `bson:"profile,omitempty" json:"profile,omitempty"`
+	Variable       []TestScriptVariableComponent    `bson:"variable,omitempty" json:"variable,omitempty"`
+	Setup          *TestScriptSetupComponent        `bson:"setup,omitempty" json:"setup,omitempty"`
+	Test           []TestScriptTestComponent        `bson:"test,omitempty" json:"test,omitempty"`
+	Teardown       *TestScriptTeardownComponent     `bson:"teardown,omitempty" json:"teardown,omitempty"`
 }
 
 // Custom marshaller to add the resourceType property, as required by the specification
@@ -118,9 +120,20 @@ type TestScriptMetadataCapabilityComponent struct {
 	Required    *bool      `bson:"required,omitempty" json:"required,omitempty"`
 	Validated   *bool      `bson:"validated,omitempty" json:"validated,omitempty"`
 	Description string     `bson:"description,omitempty" json:"description,omitempty"`
+	Origin      []int32    `bson:"origin,omitempty" json:"origin,omitempty"`
 	Destination *int32     `bson:"destination,omitempty" json:"destination,omitempty"`
 	Link        []string   `bson:"link,omitempty" json:"link,omitempty"`
 	Conformance *Reference `bson:"conformance,omitempty" json:"conformance,omitempty"`
+}
+
+type TestScriptOriginComponent struct {
+	Index   *int32 `bson:"index,omitempty" json:"index,omitempty"`
+	Profile string `bson:"profile,omitempty" json:"profile,omitempty"`
+}
+
+type TestScriptDestinationComponent struct {
+	Index   *int32 `bson:"index,omitempty" json:"index,omitempty"`
+	Profile string `bson:"profile,omitempty" json:"profile,omitempty"`
 }
 
 type TestScriptFixtureComponent struct {
@@ -130,10 +143,11 @@ type TestScriptFixtureComponent struct {
 }
 
 type TestScriptVariableComponent struct {
-	Name        string `bson:"name,omitempty" json:"name,omitempty"`
-	HeaderField string `bson:"headerField,omitempty" json:"headerField,omitempty"`
-	Path        string `bson:"path,omitempty" json:"path,omitempty"`
-	SourceId    string `bson:"sourceId,omitempty" json:"sourceId,omitempty"`
+	Name         string `bson:"name,omitempty" json:"name,omitempty"`
+	DefaultValue string `bson:"defaultValue,omitempty" json:"defaultValue,omitempty"`
+	HeaderField  string `bson:"headerField,omitempty" json:"headerField,omitempty"`
+	Path         string `bson:"path,omitempty" json:"path,omitempty"`
+	SourceId     string `bson:"sourceId,omitempty" json:"sourceId,omitempty"`
 }
 
 type TestScriptSetupComponent struct {
@@ -155,6 +169,7 @@ type TestScriptSetupActionOperationComponent struct {
 	ContentType      string                                                 `bson:"contentType,omitempty" json:"contentType,omitempty"`
 	Destination      *int32                                                 `bson:"destination,omitempty" json:"destination,omitempty"`
 	EncodeRequestUrl *bool                                                  `bson:"encodeRequestUrl,omitempty" json:"encodeRequestUrl,omitempty"`
+	Origin           *int32                                                 `bson:"origin,omitempty" json:"origin,omitempty"`
 	Params           string                                                 `bson:"params,omitempty" json:"params,omitempty"`
 	RequestHeader    []TestScriptSetupActionOperationRequestHeaderComponent `bson:"requestHeader,omitempty" json:"requestHeader,omitempty"`
 	ResponseId       string                                                 `bson:"responseId,omitempty" json:"responseId,omitempty"`
@@ -215,31 +230,24 @@ type TestScriptPlus struct {
 }
 
 type TestScriptPlusRelatedResources struct {
-	RevIncludedProvenanceResourcesReferencingTarget             *[]Provenance            `bson:"_revIncludedProvenanceResourcesReferencingTarget,omitempty"`
 	RevIncludedDocumentManifestResourcesReferencingContentref   *[]DocumentManifest      `bson:"_revIncludedDocumentManifestResourcesReferencingContentref,omitempty"`
 	RevIncludedDocumentManifestResourcesReferencingRelatedref   *[]DocumentManifest      `bson:"_revIncludedDocumentManifestResourcesReferencingRelatedref,omitempty"`
-	RevIncludedListResourcesReferencingItem                     *[]List                  `bson:"_revIncludedListResourcesReferencingItem,omitempty"`
 	RevIncludedDocumentReferenceResourcesReferencingRelatedref  *[]DocumentReference     `bson:"_revIncludedDocumentReferenceResourcesReferencingRelatedref,omitempty"`
+	RevIncludedPaymentNoticeResourcesReferencingRequest         *[]PaymentNotice         `bson:"_revIncludedPaymentNoticeResourcesReferencingRequest,omitempty"`
+	RevIncludedPaymentNoticeResourcesReferencingResponse        *[]PaymentNotice         `bson:"_revIncludedPaymentNoticeResourcesReferencingResponse,omitempty"`
+	RevIncludedOrderResponseResourcesReferencingFulfillment     *[]OrderResponse         `bson:"_revIncludedOrderResponseResourcesReferencingFulfillment,omitempty"`
+	RevIncludedMessageHeaderResourcesReferencingData            *[]MessageHeader         `bson:"_revIncludedMessageHeaderResourcesReferencingData,omitempty"`
+	RevIncludedProvenanceResourcesReferencingTarget             *[]Provenance            `bson:"_revIncludedProvenanceResourcesReferencingTarget,omitempty"`
+	RevIncludedListResourcesReferencingItem                     *[]List                  `bson:"_revIncludedListResourcesReferencingItem,omitempty"`
 	RevIncludedOrderResourcesReferencingDetail                  *[]Order                 `bson:"_revIncludedOrderResourcesReferencingDetail,omitempty"`
 	RevIncludedBasicResourcesReferencingSubject                 *[]Basic                 `bson:"_revIncludedBasicResourcesReferencingSubject,omitempty"`
 	RevIncludedAuditEventResourcesReferencingReference          *[]AuditEvent            `bson:"_revIncludedAuditEventResourcesReferencingReference,omitempty"`
 	RevIncludedCompositionResourcesReferencingSubject           *[]Composition           `bson:"_revIncludedCompositionResourcesReferencingSubject,omitempty"`
 	RevIncludedCompositionResourcesReferencingEntry             *[]Composition           `bson:"_revIncludedCompositionResourcesReferencingEntry,omitempty"`
 	RevIncludedDetectedIssueResourcesReferencingImplicated      *[]DetectedIssue         `bson:"_revIncludedDetectedIssueResourcesReferencingImplicated,omitempty"`
-	RevIncludedOrderResponseResourcesReferencingFulfillment     *[]OrderResponse         `bson:"_revIncludedOrderResponseResourcesReferencingFulfillment,omitempty"`
 	RevIncludedQuestionnaireResponseResourcesReferencingSubject *[]QuestionnaireResponse `bson:"_revIncludedQuestionnaireResponseResourcesReferencingSubject,omitempty"`
 	RevIncludedProcessResponseResourcesReferencingRequest       *[]ProcessResponse       `bson:"_revIncludedProcessResponseResourcesReferencingRequest,omitempty"`
 	RevIncludedClinicalImpressionResourcesReferencingTrigger    *[]ClinicalImpression    `bson:"_revIncludedClinicalImpressionResourcesReferencingTrigger,omitempty"`
-	RevIncludedMessageHeaderResourcesReferencingData            *[]MessageHeader         `bson:"_revIncludedMessageHeaderResourcesReferencingData,omitempty"`
-}
-
-func (t *TestScriptPlusRelatedResources) GetRevIncludedProvenanceResourcesReferencingTarget() (provenances []Provenance, err error) {
-	if t.RevIncludedProvenanceResourcesReferencingTarget == nil {
-		err = errors.New("RevIncluded provenances not requested")
-	} else {
-		provenances = *t.RevIncludedProvenanceResourcesReferencingTarget
-	}
-	return
 }
 
 func (t *TestScriptPlusRelatedResources) GetRevIncludedDocumentManifestResourcesReferencingContentref() (documentManifests []DocumentManifest, err error) {
@@ -260,20 +268,65 @@ func (t *TestScriptPlusRelatedResources) GetRevIncludedDocumentManifestResources
 	return
 }
 
-func (t *TestScriptPlusRelatedResources) GetRevIncludedListResourcesReferencingItem() (lists []List, err error) {
-	if t.RevIncludedListResourcesReferencingItem == nil {
-		err = errors.New("RevIncluded lists not requested")
-	} else {
-		lists = *t.RevIncludedListResourcesReferencingItem
-	}
-	return
-}
-
 func (t *TestScriptPlusRelatedResources) GetRevIncludedDocumentReferenceResourcesReferencingRelatedref() (documentReferences []DocumentReference, err error) {
 	if t.RevIncludedDocumentReferenceResourcesReferencingRelatedref == nil {
 		err = errors.New("RevIncluded documentReferences not requested")
 	} else {
 		documentReferences = *t.RevIncludedDocumentReferenceResourcesReferencingRelatedref
+	}
+	return
+}
+
+func (t *TestScriptPlusRelatedResources) GetRevIncludedPaymentNoticeResourcesReferencingRequest() (paymentNotices []PaymentNotice, err error) {
+	if t.RevIncludedPaymentNoticeResourcesReferencingRequest == nil {
+		err = errors.New("RevIncluded paymentNotices not requested")
+	} else {
+		paymentNotices = *t.RevIncludedPaymentNoticeResourcesReferencingRequest
+	}
+	return
+}
+
+func (t *TestScriptPlusRelatedResources) GetRevIncludedPaymentNoticeResourcesReferencingResponse() (paymentNotices []PaymentNotice, err error) {
+	if t.RevIncludedPaymentNoticeResourcesReferencingResponse == nil {
+		err = errors.New("RevIncluded paymentNotices not requested")
+	} else {
+		paymentNotices = *t.RevIncludedPaymentNoticeResourcesReferencingResponse
+	}
+	return
+}
+
+func (t *TestScriptPlusRelatedResources) GetRevIncludedOrderResponseResourcesReferencingFulfillment() (orderResponses []OrderResponse, err error) {
+	if t.RevIncludedOrderResponseResourcesReferencingFulfillment == nil {
+		err = errors.New("RevIncluded orderResponses not requested")
+	} else {
+		orderResponses = *t.RevIncludedOrderResponseResourcesReferencingFulfillment
+	}
+	return
+}
+
+func (t *TestScriptPlusRelatedResources) GetRevIncludedMessageHeaderResourcesReferencingData() (messageHeaders []MessageHeader, err error) {
+	if t.RevIncludedMessageHeaderResourcesReferencingData == nil {
+		err = errors.New("RevIncluded messageHeaders not requested")
+	} else {
+		messageHeaders = *t.RevIncludedMessageHeaderResourcesReferencingData
+	}
+	return
+}
+
+func (t *TestScriptPlusRelatedResources) GetRevIncludedProvenanceResourcesReferencingTarget() (provenances []Provenance, err error) {
+	if t.RevIncludedProvenanceResourcesReferencingTarget == nil {
+		err = errors.New("RevIncluded provenances not requested")
+	} else {
+		provenances = *t.RevIncludedProvenanceResourcesReferencingTarget
+	}
+	return
+}
+
+func (t *TestScriptPlusRelatedResources) GetRevIncludedListResourcesReferencingItem() (lists []List, err error) {
+	if t.RevIncludedListResourcesReferencingItem == nil {
+		err = errors.New("RevIncluded lists not requested")
+	} else {
+		lists = *t.RevIncludedListResourcesReferencingItem
 	}
 	return
 }
@@ -332,15 +385,6 @@ func (t *TestScriptPlusRelatedResources) GetRevIncludedDetectedIssueResourcesRef
 	return
 }
 
-func (t *TestScriptPlusRelatedResources) GetRevIncludedOrderResponseResourcesReferencingFulfillment() (orderResponses []OrderResponse, err error) {
-	if t.RevIncludedOrderResponseResourcesReferencingFulfillment == nil {
-		err = errors.New("RevIncluded orderResponses not requested")
-	} else {
-		orderResponses = *t.RevIncludedOrderResponseResourcesReferencingFulfillment
-	}
-	return
-}
-
 func (t *TestScriptPlusRelatedResources) GetRevIncludedQuestionnaireResponseResourcesReferencingSubject() (questionnaireResponses []QuestionnaireResponse, err error) {
 	if t.RevIncludedQuestionnaireResponseResourcesReferencingSubject == nil {
 		err = errors.New("RevIncluded questionnaireResponses not requested")
@@ -368,15 +412,6 @@ func (t *TestScriptPlusRelatedResources) GetRevIncludedClinicalImpressionResourc
 	return
 }
 
-func (t *TestScriptPlusRelatedResources) GetRevIncludedMessageHeaderResourcesReferencingData() (messageHeaders []MessageHeader, err error) {
-	if t.RevIncludedMessageHeaderResourcesReferencingData == nil {
-		err = errors.New("RevIncluded messageHeaders not requested")
-	} else {
-		messageHeaders = *t.RevIncludedMessageHeaderResourcesReferencingData
-	}
-	return
-}
-
 func (t *TestScriptPlusRelatedResources) GetIncludedResources() map[string]interface{} {
 	resourceMap := make(map[string]interface{})
 	return resourceMap
@@ -384,11 +419,6 @@ func (t *TestScriptPlusRelatedResources) GetIncludedResources() map[string]inter
 
 func (t *TestScriptPlusRelatedResources) GetRevIncludedResources() map[string]interface{} {
 	resourceMap := make(map[string]interface{})
-	if t.RevIncludedProvenanceResourcesReferencingTarget != nil {
-		for _, r := range *t.RevIncludedProvenanceResourcesReferencingTarget {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if t.RevIncludedDocumentManifestResourcesReferencingContentref != nil {
 		for _, r := range *t.RevIncludedDocumentManifestResourcesReferencingContentref {
 			resourceMap[r.Id] = &r
@@ -399,13 +429,38 @@ func (t *TestScriptPlusRelatedResources) GetRevIncludedResources() map[string]in
 			resourceMap[r.Id] = &r
 		}
 	}
-	if t.RevIncludedListResourcesReferencingItem != nil {
-		for _, r := range *t.RevIncludedListResourcesReferencingItem {
+	if t.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
+		for _, r := range *t.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
 			resourceMap[r.Id] = &r
 		}
 	}
-	if t.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
-		for _, r := range *t.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
+	if t.RevIncludedPaymentNoticeResourcesReferencingRequest != nil {
+		for _, r := range *t.RevIncludedPaymentNoticeResourcesReferencingRequest {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedPaymentNoticeResourcesReferencingResponse != nil {
+		for _, r := range *t.RevIncludedPaymentNoticeResourcesReferencingResponse {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
+		for _, r := range *t.RevIncludedOrderResponseResourcesReferencingFulfillment {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedMessageHeaderResourcesReferencingData != nil {
+		for _, r := range *t.RevIncludedMessageHeaderResourcesReferencingData {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedProvenanceResourcesReferencingTarget != nil {
+		for _, r := range *t.RevIncludedProvenanceResourcesReferencingTarget {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedListResourcesReferencingItem != nil {
+		for _, r := range *t.RevIncludedListResourcesReferencingItem {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -439,11 +494,6 @@ func (t *TestScriptPlusRelatedResources) GetRevIncludedResources() map[string]in
 			resourceMap[r.Id] = &r
 		}
 	}
-	if t.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
-		for _, r := range *t.RevIncludedOrderResponseResourcesReferencingFulfillment {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if t.RevIncludedQuestionnaireResponseResourcesReferencingSubject != nil {
 		for _, r := range *t.RevIncludedQuestionnaireResponseResourcesReferencingSubject {
 			resourceMap[r.Id] = &r
@@ -456,11 +506,6 @@ func (t *TestScriptPlusRelatedResources) GetRevIncludedResources() map[string]in
 	}
 	if t.RevIncludedClinicalImpressionResourcesReferencingTrigger != nil {
 		for _, r := range *t.RevIncludedClinicalImpressionResourcesReferencingTrigger {
-			resourceMap[r.Id] = &r
-		}
-	}
-	if t.RevIncludedMessageHeaderResourcesReferencingData != nil {
-		for _, r := range *t.RevIncludedMessageHeaderResourcesReferencingData {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -469,11 +514,6 @@ func (t *TestScriptPlusRelatedResources) GetRevIncludedResources() map[string]in
 
 func (t *TestScriptPlusRelatedResources) GetIncludedAndRevIncludedResources() map[string]interface{} {
 	resourceMap := make(map[string]interface{})
-	if t.RevIncludedProvenanceResourcesReferencingTarget != nil {
-		for _, r := range *t.RevIncludedProvenanceResourcesReferencingTarget {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if t.RevIncludedDocumentManifestResourcesReferencingContentref != nil {
 		for _, r := range *t.RevIncludedDocumentManifestResourcesReferencingContentref {
 			resourceMap[r.Id] = &r
@@ -484,13 +524,38 @@ func (t *TestScriptPlusRelatedResources) GetIncludedAndRevIncludedResources() ma
 			resourceMap[r.Id] = &r
 		}
 	}
-	if t.RevIncludedListResourcesReferencingItem != nil {
-		for _, r := range *t.RevIncludedListResourcesReferencingItem {
+	if t.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
+		for _, r := range *t.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
 			resourceMap[r.Id] = &r
 		}
 	}
-	if t.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
-		for _, r := range *t.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
+	if t.RevIncludedPaymentNoticeResourcesReferencingRequest != nil {
+		for _, r := range *t.RevIncludedPaymentNoticeResourcesReferencingRequest {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedPaymentNoticeResourcesReferencingResponse != nil {
+		for _, r := range *t.RevIncludedPaymentNoticeResourcesReferencingResponse {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
+		for _, r := range *t.RevIncludedOrderResponseResourcesReferencingFulfillment {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedMessageHeaderResourcesReferencingData != nil {
+		for _, r := range *t.RevIncludedMessageHeaderResourcesReferencingData {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedProvenanceResourcesReferencingTarget != nil {
+		for _, r := range *t.RevIncludedProvenanceResourcesReferencingTarget {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if t.RevIncludedListResourcesReferencingItem != nil {
+		for _, r := range *t.RevIncludedListResourcesReferencingItem {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -524,11 +589,6 @@ func (t *TestScriptPlusRelatedResources) GetIncludedAndRevIncludedResources() ma
 			resourceMap[r.Id] = &r
 		}
 	}
-	if t.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
-		for _, r := range *t.RevIncludedOrderResponseResourcesReferencingFulfillment {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if t.RevIncludedQuestionnaireResponseResourcesReferencingSubject != nil {
 		for _, r := range *t.RevIncludedQuestionnaireResponseResourcesReferencingSubject {
 			resourceMap[r.Id] = &r
@@ -541,11 +601,6 @@ func (t *TestScriptPlusRelatedResources) GetIncludedAndRevIncludedResources() ma
 	}
 	if t.RevIncludedClinicalImpressionResourcesReferencingTrigger != nil {
 		for _, r := range *t.RevIncludedClinicalImpressionResourcesReferencingTrigger {
-			resourceMap[r.Id] = &r
-		}
-	}
-	if t.RevIncludedMessageHeaderResourcesReferencingData != nil {
-		for _, r := range *t.RevIncludedMessageHeaderResourcesReferencingData {
 			resourceMap[r.Id] = &r
 		}
 	}

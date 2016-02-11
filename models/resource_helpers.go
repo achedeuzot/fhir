@@ -51,6 +51,8 @@ func StructForResourceName(name string) interface{} {
 		return ClaimResponse{}
 	case "ClinicalImpression":
 		return ClinicalImpression{}
+	case "CodeSystem":
+		return CodeSystem{}
 	case "Communication":
 		return Communication{}
 	case "CommunicationRequest":
@@ -69,6 +71,10 @@ func StructForResourceName(name string) interface{} {
 		return Coverage{}
 	case "DataElement":
 		return DataElement{}
+	case "DecisionSupportRule":
+		return DecisionSupportRule{}
+	case "DecisionSupportServiceModule":
+		return DecisionSupportServiceModule{}
 	case "DetectedIssue":
 		return DetectedIssue{}
 	case "Device":
@@ -101,6 +107,8 @@ func StructForResourceName(name string) interface{} {
 		return EnrollmentResponse{}
 	case "EpisodeOfCare":
 		return EpisodeOfCare{}
+	case "ExpansionProfile":
+		return ExpansionProfile{}
 	case "ExplanationOfBenefit":
 		return ExplanationOfBenefit{}
 	case "FamilyMemberHistory":
@@ -111,6 +119,8 @@ func StructForResourceName(name string) interface{} {
 		return Goal{}
 	case "Group":
 		return Group{}
+	case "GuidanceResponse":
+		return GuidanceResponse{}
 	case "HealthcareService":
 		return HealthcareService{}
 	case "ImagingObjectSelection":
@@ -123,10 +133,16 @@ func StructForResourceName(name string) interface{} {
 		return ImmunizationRecommendation{}
 	case "ImplementationGuide":
 		return ImplementationGuide{}
+	case "Library":
+		return Library{}
+	case "Linkage":
+		return Linkage{}
 	case "List":
 		return List{}
 	case "Location":
 		return Location{}
+	case "Measure":
+		return Measure{}
 	case "Media":
 		return Media{}
 	case "Medication":
@@ -141,6 +157,8 @@ func StructForResourceName(name string) interface{} {
 		return MedicationStatement{}
 	case "MessageHeader":
 		return MessageHeader{}
+	case "ModuleDefinition":
+		return ModuleDefinition{}
 	case "NamingSystem":
 		return NamingSystem{}
 	case "NutritionOrder":
@@ -155,6 +173,8 @@ func StructForResourceName(name string) interface{} {
 		return Order{}
 	case "OrderResponse":
 		return OrderResponse{}
+	case "OrderSet":
+		return OrderSet{}
 	case "Organization":
 		return Organization{}
 	case "Patient":
@@ -175,6 +195,8 @@ func StructForResourceName(name string) interface{} {
 		return ProcessRequest{}
 	case "ProcessResponse":
 		return ProcessResponse{}
+	case "Protocol":
+		return Protocol{}
 	case "Provenance":
 		return Provenance{}
 	case "Questionnaire":
@@ -191,6 +213,8 @@ func StructForResourceName(name string) interface{} {
 		return Schedule{}
 	case "SearchParameter":
 		return SearchParameter{}
+	case "Sequence":
+		return Sequence{}
 	case "Slot":
 		return Slot{}
 	case "Specimen":
@@ -257,6 +281,8 @@ func StructPlusForResourceName(name string) interface{} {
 		return ClaimResponsePlus{}
 	case "ClinicalImpression":
 		return ClinicalImpressionPlus{}
+	case "CodeSystem":
+		return CodeSystemPlus{}
 	case "Communication":
 		return CommunicationPlus{}
 	case "CommunicationRequest":
@@ -275,6 +301,10 @@ func StructPlusForResourceName(name string) interface{} {
 		return CoveragePlus{}
 	case "DataElement":
 		return DataElementPlus{}
+	case "DecisionSupportRule":
+		return DecisionSupportRulePlus{}
+	case "DecisionSupportServiceModule":
+		return DecisionSupportServiceModulePlus{}
 	case "DetectedIssue":
 		return DetectedIssuePlus{}
 	case "Device":
@@ -307,6 +337,8 @@ func StructPlusForResourceName(name string) interface{} {
 		return EnrollmentResponsePlus{}
 	case "EpisodeOfCare":
 		return EpisodeOfCarePlus{}
+	case "ExpansionProfile":
+		return ExpansionProfilePlus{}
 	case "ExplanationOfBenefit":
 		return ExplanationOfBenefitPlus{}
 	case "FamilyMemberHistory":
@@ -317,6 +349,8 @@ func StructPlusForResourceName(name string) interface{} {
 		return GoalPlus{}
 	case "Group":
 		return GroupPlus{}
+	case "GuidanceResponse":
+		return GuidanceResponsePlus{}
 	case "HealthcareService":
 		return HealthcareServicePlus{}
 	case "ImagingObjectSelection":
@@ -329,10 +363,16 @@ func StructPlusForResourceName(name string) interface{} {
 		return ImmunizationRecommendationPlus{}
 	case "ImplementationGuide":
 		return ImplementationGuidePlus{}
+	case "Library":
+		return LibraryPlus{}
+	case "Linkage":
+		return LinkagePlus{}
 	case "List":
 		return ListPlus{}
 	case "Location":
 		return LocationPlus{}
+	case "Measure":
+		return MeasurePlus{}
 	case "Media":
 		return MediaPlus{}
 	case "Medication":
@@ -347,6 +387,8 @@ func StructPlusForResourceName(name string) interface{} {
 		return MedicationStatementPlus{}
 	case "MessageHeader":
 		return MessageHeaderPlus{}
+	case "ModuleDefinition":
+		return ModuleDefinitionPlus{}
 	case "NamingSystem":
 		return NamingSystemPlus{}
 	case "NutritionOrder":
@@ -361,6 +403,8 @@ func StructPlusForResourceName(name string) interface{} {
 		return OrderPlus{}
 	case "OrderResponse":
 		return OrderResponsePlus{}
+	case "OrderSet":
+		return OrderSetPlus{}
 	case "Organization":
 		return OrganizationPlus{}
 	case "Patient":
@@ -381,6 +425,8 @@ func StructPlusForResourceName(name string) interface{} {
 		return ProcessRequestPlus{}
 	case "ProcessResponse":
 		return ProcessResponsePlus{}
+	case "Protocol":
+		return ProtocolPlus{}
 	case "Provenance":
 		return ProvenancePlus{}
 	case "Questionnaire":
@@ -397,6 +443,8 @@ func StructPlusForResourceName(name string) interface{} {
 		return SchedulePlus{}
 	case "SearchParameter":
 		return SearchParameterPlus{}
+	case "Sequence":
+		return SequencePlus{}
 	case "Slot":
 		return SlotPlus{}
 	case "Specimen":
@@ -451,6 +499,8 @@ func PluralizeLowerResourceName(name string) string {
 		return "claimresponses"
 	case "ClinicalImpression":
 		return "clinicalimpressions"
+	case "CodeSystem":
+		return "codesystems"
 	case "Communication":
 		return "communications"
 	case "CommunicationRequest":
@@ -469,6 +519,10 @@ func PluralizeLowerResourceName(name string) string {
 		return "coverages"
 	case "DataElement":
 		return "dataelements"
+	case "DecisionSupportRule":
+		return "decisionsupportrules"
+	case "DecisionSupportServiceModule":
+		return "decisionsupportservicemodules"
 	case "DetectedIssue":
 		return "detectedissues"
 	case "Device":
@@ -501,6 +555,8 @@ func PluralizeLowerResourceName(name string) string {
 		return "enrollmentresponses"
 	case "EpisodeOfCare":
 		return "episodeofcares"
+	case "ExpansionProfile":
+		return "expansionprofiles"
 	case "ExplanationOfBenefit":
 		return "explanationofbenefits"
 	case "FamilyMemberHistory":
@@ -511,6 +567,8 @@ func PluralizeLowerResourceName(name string) string {
 		return "goals"
 	case "Group":
 		return "groups"
+	case "GuidanceResponse":
+		return "guidanceresponses"
 	case "HealthcareService":
 		return "healthcareservices"
 	case "ImagingObjectSelection":
@@ -523,10 +581,16 @@ func PluralizeLowerResourceName(name string) string {
 		return "immunizationrecommendations"
 	case "ImplementationGuide":
 		return "implementationguides"
+	case "Library":
+		return "libraries"
+	case "Linkage":
+		return "linkages"
 	case "List":
 		return "lists"
 	case "Location":
 		return "locations"
+	case "Measure":
+		return "measures"
 	case "Media":
 		return "media"
 	case "Medication":
@@ -541,6 +605,8 @@ func PluralizeLowerResourceName(name string) string {
 		return "medicationstatements"
 	case "MessageHeader":
 		return "messageheaders"
+	case "ModuleDefinition":
+		return "moduledefinitions"
 	case "NamingSystem":
 		return "namingsystems"
 	case "NutritionOrder":
@@ -555,6 +621,8 @@ func PluralizeLowerResourceName(name string) string {
 		return "orders"
 	case "OrderResponse":
 		return "orderresponses"
+	case "OrderSet":
+		return "ordersets"
 	case "Organization":
 		return "organizations"
 	case "Patient":
@@ -575,6 +643,8 @@ func PluralizeLowerResourceName(name string) string {
 		return "processrequests"
 	case "ProcessResponse":
 		return "processresponses"
+	case "Protocol":
+		return "protocols"
 	case "Provenance":
 		return "provenances"
 	case "Questionnaire":
@@ -591,6 +661,8 @@ func PluralizeLowerResourceName(name string) string {
 		return "schedules"
 	case "SearchParameter":
 		return "searchparameters"
+	case "Sequence":
+		return "sequences"
 	case "Slot":
 		return "slots"
 	case "Specimen":

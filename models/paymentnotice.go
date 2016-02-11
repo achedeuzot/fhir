@@ -44,6 +44,7 @@ type PaymentNotice struct {
 	Request         *Reference    `bson:"request,omitempty" json:"request,omitempty"`
 	Response        *Reference    `bson:"response,omitempty" json:"response,omitempty"`
 	PaymentStatus   *Coding       `bson:"paymentStatus,omitempty" json:"paymentStatus,omitempty"`
+	StatusDate      *FHIRDateTime `bson:"statusDate,omitempty" json:"statusDate,omitempty"`
 }
 
 // Custom marshaller to add the resourceType property, as required by the specification
@@ -94,29 +95,46 @@ type PaymentNoticePlus struct {
 }
 
 type PaymentNoticePlusRelatedResources struct {
-	RevIncludedProvenanceResourcesReferencingTarget             *[]Provenance            `bson:"_revIncludedProvenanceResourcesReferencingTarget,omitempty"`
+	IncludedPractitionerResourcesReferencedByProvider           *[]Practitioner          `bson:"_includedPractitionerResourcesReferencedByProvider,omitempty"`
+	IncludedOrganizationResourcesReferencedByOrganization       *[]Organization          `bson:"_includedOrganizationResourcesReferencedByOrganization,omitempty"`
 	RevIncludedDocumentManifestResourcesReferencingContentref   *[]DocumentManifest      `bson:"_revIncludedDocumentManifestResourcesReferencingContentref,omitempty"`
 	RevIncludedDocumentManifestResourcesReferencingRelatedref   *[]DocumentManifest      `bson:"_revIncludedDocumentManifestResourcesReferencingRelatedref,omitempty"`
-	RevIncludedListResourcesReferencingItem                     *[]List                  `bson:"_revIncludedListResourcesReferencingItem,omitempty"`
 	RevIncludedDocumentReferenceResourcesReferencingRelatedref  *[]DocumentReference     `bson:"_revIncludedDocumentReferenceResourcesReferencingRelatedref,omitempty"`
+	RevIncludedPaymentNoticeResourcesReferencingRequest         *[]PaymentNotice         `bson:"_revIncludedPaymentNoticeResourcesReferencingRequest,omitempty"`
+	RevIncludedPaymentNoticeResourcesReferencingResponse        *[]PaymentNotice         `bson:"_revIncludedPaymentNoticeResourcesReferencingResponse,omitempty"`
+	RevIncludedOrderResponseResourcesReferencingFulfillment     *[]OrderResponse         `bson:"_revIncludedOrderResponseResourcesReferencingFulfillment,omitempty"`
+	RevIncludedMessageHeaderResourcesReferencingData            *[]MessageHeader         `bson:"_revIncludedMessageHeaderResourcesReferencingData,omitempty"`
+	RevIncludedProvenanceResourcesReferencingTarget             *[]Provenance            `bson:"_revIncludedProvenanceResourcesReferencingTarget,omitempty"`
+	RevIncludedListResourcesReferencingItem                     *[]List                  `bson:"_revIncludedListResourcesReferencingItem,omitempty"`
 	RevIncludedOrderResourcesReferencingDetail                  *[]Order                 `bson:"_revIncludedOrderResourcesReferencingDetail,omitempty"`
 	RevIncludedBasicResourcesReferencingSubject                 *[]Basic                 `bson:"_revIncludedBasicResourcesReferencingSubject,omitempty"`
 	RevIncludedAuditEventResourcesReferencingReference          *[]AuditEvent            `bson:"_revIncludedAuditEventResourcesReferencingReference,omitempty"`
 	RevIncludedCompositionResourcesReferencingSubject           *[]Composition           `bson:"_revIncludedCompositionResourcesReferencingSubject,omitempty"`
 	RevIncludedCompositionResourcesReferencingEntry             *[]Composition           `bson:"_revIncludedCompositionResourcesReferencingEntry,omitempty"`
 	RevIncludedDetectedIssueResourcesReferencingImplicated      *[]DetectedIssue         `bson:"_revIncludedDetectedIssueResourcesReferencingImplicated,omitempty"`
-	RevIncludedOrderResponseResourcesReferencingFulfillment     *[]OrderResponse         `bson:"_revIncludedOrderResponseResourcesReferencingFulfillment,omitempty"`
 	RevIncludedQuestionnaireResponseResourcesReferencingSubject *[]QuestionnaireResponse `bson:"_revIncludedQuestionnaireResponseResourcesReferencingSubject,omitempty"`
 	RevIncludedProcessResponseResourcesReferencingRequest       *[]ProcessResponse       `bson:"_revIncludedProcessResponseResourcesReferencingRequest,omitempty"`
 	RevIncludedClinicalImpressionResourcesReferencingTrigger    *[]ClinicalImpression    `bson:"_revIncludedClinicalImpressionResourcesReferencingTrigger,omitempty"`
-	RevIncludedMessageHeaderResourcesReferencingData            *[]MessageHeader         `bson:"_revIncludedMessageHeaderResourcesReferencingData,omitempty"`
 }
 
-func (p *PaymentNoticePlusRelatedResources) GetRevIncludedProvenanceResourcesReferencingTarget() (provenances []Provenance, err error) {
-	if p.RevIncludedProvenanceResourcesReferencingTarget == nil {
-		err = errors.New("RevIncluded provenances not requested")
-	} else {
-		provenances = *p.RevIncludedProvenanceResourcesReferencingTarget
+func (p *PaymentNoticePlusRelatedResources) GetIncludedPractitionerResourceReferencedByProvider() (practitioner *Practitioner, err error) {
+	if p.IncludedPractitionerResourcesReferencedByProvider == nil {
+		err = errors.New("Included practitioners not requested")
+	} else if len(*p.IncludedPractitionerResourcesReferencedByProvider) > 1 {
+		err = fmt.Errorf("Expected 0 or 1 practitioner, but found %d", len(*p.IncludedPractitionerResourcesReferencedByProvider))
+	} else if len(*p.IncludedPractitionerResourcesReferencedByProvider) == 1 {
+		practitioner = &(*p.IncludedPractitionerResourcesReferencedByProvider)[0]
+	}
+	return
+}
+
+func (p *PaymentNoticePlusRelatedResources) GetIncludedOrganizationResourceReferencedByOrganization() (organization *Organization, err error) {
+	if p.IncludedOrganizationResourcesReferencedByOrganization == nil {
+		err = errors.New("Included organizations not requested")
+	} else if len(*p.IncludedOrganizationResourcesReferencedByOrganization) > 1 {
+		err = fmt.Errorf("Expected 0 or 1 organization, but found %d", len(*p.IncludedOrganizationResourcesReferencedByOrganization))
+	} else if len(*p.IncludedOrganizationResourcesReferencedByOrganization) == 1 {
+		organization = &(*p.IncludedOrganizationResourcesReferencedByOrganization)[0]
 	}
 	return
 }
@@ -139,20 +157,65 @@ func (p *PaymentNoticePlusRelatedResources) GetRevIncludedDocumentManifestResour
 	return
 }
 
-func (p *PaymentNoticePlusRelatedResources) GetRevIncludedListResourcesReferencingItem() (lists []List, err error) {
-	if p.RevIncludedListResourcesReferencingItem == nil {
-		err = errors.New("RevIncluded lists not requested")
-	} else {
-		lists = *p.RevIncludedListResourcesReferencingItem
-	}
-	return
-}
-
 func (p *PaymentNoticePlusRelatedResources) GetRevIncludedDocumentReferenceResourcesReferencingRelatedref() (documentReferences []DocumentReference, err error) {
 	if p.RevIncludedDocumentReferenceResourcesReferencingRelatedref == nil {
 		err = errors.New("RevIncluded documentReferences not requested")
 	} else {
 		documentReferences = *p.RevIncludedDocumentReferenceResourcesReferencingRelatedref
+	}
+	return
+}
+
+func (p *PaymentNoticePlusRelatedResources) GetRevIncludedPaymentNoticeResourcesReferencingRequest() (paymentNotices []PaymentNotice, err error) {
+	if p.RevIncludedPaymentNoticeResourcesReferencingRequest == nil {
+		err = errors.New("RevIncluded paymentNotices not requested")
+	} else {
+		paymentNotices = *p.RevIncludedPaymentNoticeResourcesReferencingRequest
+	}
+	return
+}
+
+func (p *PaymentNoticePlusRelatedResources) GetRevIncludedPaymentNoticeResourcesReferencingResponse() (paymentNotices []PaymentNotice, err error) {
+	if p.RevIncludedPaymentNoticeResourcesReferencingResponse == nil {
+		err = errors.New("RevIncluded paymentNotices not requested")
+	} else {
+		paymentNotices = *p.RevIncludedPaymentNoticeResourcesReferencingResponse
+	}
+	return
+}
+
+func (p *PaymentNoticePlusRelatedResources) GetRevIncludedOrderResponseResourcesReferencingFulfillment() (orderResponses []OrderResponse, err error) {
+	if p.RevIncludedOrderResponseResourcesReferencingFulfillment == nil {
+		err = errors.New("RevIncluded orderResponses not requested")
+	} else {
+		orderResponses = *p.RevIncludedOrderResponseResourcesReferencingFulfillment
+	}
+	return
+}
+
+func (p *PaymentNoticePlusRelatedResources) GetRevIncludedMessageHeaderResourcesReferencingData() (messageHeaders []MessageHeader, err error) {
+	if p.RevIncludedMessageHeaderResourcesReferencingData == nil {
+		err = errors.New("RevIncluded messageHeaders not requested")
+	} else {
+		messageHeaders = *p.RevIncludedMessageHeaderResourcesReferencingData
+	}
+	return
+}
+
+func (p *PaymentNoticePlusRelatedResources) GetRevIncludedProvenanceResourcesReferencingTarget() (provenances []Provenance, err error) {
+	if p.RevIncludedProvenanceResourcesReferencingTarget == nil {
+		err = errors.New("RevIncluded provenances not requested")
+	} else {
+		provenances = *p.RevIncludedProvenanceResourcesReferencingTarget
+	}
+	return
+}
+
+func (p *PaymentNoticePlusRelatedResources) GetRevIncludedListResourcesReferencingItem() (lists []List, err error) {
+	if p.RevIncludedListResourcesReferencingItem == nil {
+		err = errors.New("RevIncluded lists not requested")
+	} else {
+		lists = *p.RevIncludedListResourcesReferencingItem
 	}
 	return
 }
@@ -211,15 +274,6 @@ func (p *PaymentNoticePlusRelatedResources) GetRevIncludedDetectedIssueResources
 	return
 }
 
-func (p *PaymentNoticePlusRelatedResources) GetRevIncludedOrderResponseResourcesReferencingFulfillment() (orderResponses []OrderResponse, err error) {
-	if p.RevIncludedOrderResponseResourcesReferencingFulfillment == nil {
-		err = errors.New("RevIncluded orderResponses not requested")
-	} else {
-		orderResponses = *p.RevIncludedOrderResponseResourcesReferencingFulfillment
-	}
-	return
-}
-
 func (p *PaymentNoticePlusRelatedResources) GetRevIncludedQuestionnaireResponseResourcesReferencingSubject() (questionnaireResponses []QuestionnaireResponse, err error) {
 	if p.RevIncludedQuestionnaireResponseResourcesReferencingSubject == nil {
 		err = errors.New("RevIncluded questionnaireResponses not requested")
@@ -247,27 +301,23 @@ func (p *PaymentNoticePlusRelatedResources) GetRevIncludedClinicalImpressionReso
 	return
 }
 
-func (p *PaymentNoticePlusRelatedResources) GetRevIncludedMessageHeaderResourcesReferencingData() (messageHeaders []MessageHeader, err error) {
-	if p.RevIncludedMessageHeaderResourcesReferencingData == nil {
-		err = errors.New("RevIncluded messageHeaders not requested")
-	} else {
-		messageHeaders = *p.RevIncludedMessageHeaderResourcesReferencingData
-	}
-	return
-}
-
 func (p *PaymentNoticePlusRelatedResources) GetIncludedResources() map[string]interface{} {
 	resourceMap := make(map[string]interface{})
+	if p.IncludedPractitionerResourcesReferencedByProvider != nil {
+		for _, r := range *p.IncludedPractitionerResourcesReferencedByProvider {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.IncludedOrganizationResourcesReferencedByOrganization != nil {
+		for _, r := range *p.IncludedOrganizationResourcesReferencedByOrganization {
+			resourceMap[r.Id] = &r
+		}
+	}
 	return resourceMap
 }
 
 func (p *PaymentNoticePlusRelatedResources) GetRevIncludedResources() map[string]interface{} {
 	resourceMap := make(map[string]interface{})
-	if p.RevIncludedProvenanceResourcesReferencingTarget != nil {
-		for _, r := range *p.RevIncludedProvenanceResourcesReferencingTarget {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if p.RevIncludedDocumentManifestResourcesReferencingContentref != nil {
 		for _, r := range *p.RevIncludedDocumentManifestResourcesReferencingContentref {
 			resourceMap[r.Id] = &r
@@ -278,13 +328,38 @@ func (p *PaymentNoticePlusRelatedResources) GetRevIncludedResources() map[string
 			resourceMap[r.Id] = &r
 		}
 	}
-	if p.RevIncludedListResourcesReferencingItem != nil {
-		for _, r := range *p.RevIncludedListResourcesReferencingItem {
+	if p.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
+		for _, r := range *p.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
 			resourceMap[r.Id] = &r
 		}
 	}
-	if p.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
-		for _, r := range *p.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
+	if p.RevIncludedPaymentNoticeResourcesReferencingRequest != nil {
+		for _, r := range *p.RevIncludedPaymentNoticeResourcesReferencingRequest {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedPaymentNoticeResourcesReferencingResponse != nil {
+		for _, r := range *p.RevIncludedPaymentNoticeResourcesReferencingResponse {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
+		for _, r := range *p.RevIncludedOrderResponseResourcesReferencingFulfillment {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedMessageHeaderResourcesReferencingData != nil {
+		for _, r := range *p.RevIncludedMessageHeaderResourcesReferencingData {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedProvenanceResourcesReferencingTarget != nil {
+		for _, r := range *p.RevIncludedProvenanceResourcesReferencingTarget {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedListResourcesReferencingItem != nil {
+		for _, r := range *p.RevIncludedListResourcesReferencingItem {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -318,11 +393,6 @@ func (p *PaymentNoticePlusRelatedResources) GetRevIncludedResources() map[string
 			resourceMap[r.Id] = &r
 		}
 	}
-	if p.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
-		for _, r := range *p.RevIncludedOrderResponseResourcesReferencingFulfillment {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if p.RevIncludedQuestionnaireResponseResourcesReferencingSubject != nil {
 		for _, r := range *p.RevIncludedQuestionnaireResponseResourcesReferencingSubject {
 			resourceMap[r.Id] = &r
@@ -335,11 +405,6 @@ func (p *PaymentNoticePlusRelatedResources) GetRevIncludedResources() map[string
 	}
 	if p.RevIncludedClinicalImpressionResourcesReferencingTrigger != nil {
 		for _, r := range *p.RevIncludedClinicalImpressionResourcesReferencingTrigger {
-			resourceMap[r.Id] = &r
-		}
-	}
-	if p.RevIncludedMessageHeaderResourcesReferencingData != nil {
-		for _, r := range *p.RevIncludedMessageHeaderResourcesReferencingData {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -348,8 +413,13 @@ func (p *PaymentNoticePlusRelatedResources) GetRevIncludedResources() map[string
 
 func (p *PaymentNoticePlusRelatedResources) GetIncludedAndRevIncludedResources() map[string]interface{} {
 	resourceMap := make(map[string]interface{})
-	if p.RevIncludedProvenanceResourcesReferencingTarget != nil {
-		for _, r := range *p.RevIncludedProvenanceResourcesReferencingTarget {
+	if p.IncludedPractitionerResourcesReferencedByProvider != nil {
+		for _, r := range *p.IncludedPractitionerResourcesReferencedByProvider {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.IncludedOrganizationResourcesReferencedByOrganization != nil {
+		for _, r := range *p.IncludedOrganizationResourcesReferencedByOrganization {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -363,13 +433,38 @@ func (p *PaymentNoticePlusRelatedResources) GetIncludedAndRevIncludedResources()
 			resourceMap[r.Id] = &r
 		}
 	}
-	if p.RevIncludedListResourcesReferencingItem != nil {
-		for _, r := range *p.RevIncludedListResourcesReferencingItem {
+	if p.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
+		for _, r := range *p.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
 			resourceMap[r.Id] = &r
 		}
 	}
-	if p.RevIncludedDocumentReferenceResourcesReferencingRelatedref != nil {
-		for _, r := range *p.RevIncludedDocumentReferenceResourcesReferencingRelatedref {
+	if p.RevIncludedPaymentNoticeResourcesReferencingRequest != nil {
+		for _, r := range *p.RevIncludedPaymentNoticeResourcesReferencingRequest {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedPaymentNoticeResourcesReferencingResponse != nil {
+		for _, r := range *p.RevIncludedPaymentNoticeResourcesReferencingResponse {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
+		for _, r := range *p.RevIncludedOrderResponseResourcesReferencingFulfillment {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedMessageHeaderResourcesReferencingData != nil {
+		for _, r := range *p.RevIncludedMessageHeaderResourcesReferencingData {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedProvenanceResourcesReferencingTarget != nil {
+		for _, r := range *p.RevIncludedProvenanceResourcesReferencingTarget {
+			resourceMap[r.Id] = &r
+		}
+	}
+	if p.RevIncludedListResourcesReferencingItem != nil {
+		for _, r := range *p.RevIncludedListResourcesReferencingItem {
 			resourceMap[r.Id] = &r
 		}
 	}
@@ -403,11 +498,6 @@ func (p *PaymentNoticePlusRelatedResources) GetIncludedAndRevIncludedResources()
 			resourceMap[r.Id] = &r
 		}
 	}
-	if p.RevIncludedOrderResponseResourcesReferencingFulfillment != nil {
-		for _, r := range *p.RevIncludedOrderResponseResourcesReferencingFulfillment {
-			resourceMap[r.Id] = &r
-		}
-	}
 	if p.RevIncludedQuestionnaireResponseResourcesReferencingSubject != nil {
 		for _, r := range *p.RevIncludedQuestionnaireResponseResourcesReferencingSubject {
 			resourceMap[r.Id] = &r
@@ -420,11 +510,6 @@ func (p *PaymentNoticePlusRelatedResources) GetIncludedAndRevIncludedResources()
 	}
 	if p.RevIncludedClinicalImpressionResourcesReferencingTrigger != nil {
 		for _, r := range *p.RevIncludedClinicalImpressionResourcesReferencingTrigger {
-			resourceMap[r.Id] = &r
-		}
-	}
-	if p.RevIncludedMessageHeaderResourcesReferencingData != nil {
-		for _, r := range *p.RevIncludedMessageHeaderResourcesReferencingData {
 			resourceMap[r.Id] = &r
 		}
 	}
